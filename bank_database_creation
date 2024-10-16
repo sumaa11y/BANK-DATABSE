@@ -1,0 +1,75 @@
+create database bms_db;
+use bms_db;
+CREATE TABLE CUSTOMER_PERSONAL_INFO(
+  CUSTOMER_ID varchar(5),
+  CUSTOMER_NAME VARCHAR(30),
+  DATE_OF_BIRTH date,
+  GUARDIAN_NAME varchar(30),
+  ADDRESS varchar(50),
+  CONTACT_NO bigint(10),
+  MAIL_ID varchar(30),
+  GENDER CHAR(1),
+  MARITAL_STATUS VARCHAR(10),
+  IDENTIFICATION_DOC_TYPE VARCHAR(20),
+  ID_DOC_NO varchar(20),
+  CITIZENSHIP VARCHAR(10),
+  constraint CUST_PERS_INFO_PK primary key(CUSTOMER_ID)  
+  );
+CREATE TABLE CUSTOMER_REFERENCE_INFO (
+  CUSTOMER_ID varchar(5),
+  REFERENCE_ACC_NAME varchar(20),
+  REFERENCE_ACC_NO bigint(16),
+  REFERENCE_ACC_ADDRESS varchar(50),
+  RELATION varchar(25),
+  CONSTRAINT CUST_REF_INFO_PK primary key(CUSTOMER_ID),
+  constraint CUST_REF_INFO_FK foreign key(CUSTOMER_ID) references CUSTOMER_PERSONAL_INFO(CUSTOMER_ID)
+  );  
+  CREATE TABLE BANK_INFO(
+  IFSC_CODE VARCHAR(15),
+  BANK_NAME varchar(25),
+  BRANCH_NAME VARCHAR(25),
+  constraint BANK_INFO_PK primary key(IFSC_CODE)
+  ); 
+  CREATE TABLE ACCOUNT_INFO(
+  ACCOUNT_NO BIGINT(16),
+  CUSTOMER_ID varchar(5),
+  ACCOUNT_TYPE varchar(10),
+  REGISTRATION_DATE DATE,
+  ACTIVATION_DATE DATE,
+  IFSC_CODE varchar(10),
+  INTEREST DECIMAL(7,2),
+  INITIAL_DEPOSIT BIGINT(10),
+  constraint ACC_INFO_PK primary key(ACCOUNT_NO),
+  constraint ACC_INFO_PERS_FK foreign key(CUSTOMER_ID) references CUSTOMER_PERSONAL_INFO(CUSTOMER_ID),
+  constraint ACC_INFO_BANK_FK foreign key(IFSC_CODE) references BANK_INFO(IFSC_CODE)
+  );
+  
+  INSERT INTO BANK_INFO (IFSC_CODE, BANK_NAME, BRANCH_NAME) VALUES
+('HDFC0001234', 'HDFC Bank', 'MG Road'),
+('ICIC0005678', 'ICICI Bank', 'Connaught Place'),
+('SBIN0012345', 'State Bank of India', 'Churchgate'),
+('PNB0009876', 'Punjab National Bank', 'Kalkaji'),
+('AXIS0004567', 'Axis Bank', 'Baner'),
+('BOB0012345', 'Bank of Baroda', 'Jayanagar'),
+('KARB0001234', 'Karnataka Bank', 'Koramangala'),
+('CANB0009876', 'Canara Bank', 'Whitefield'),
+('UBIN0004567', 'Union Bank of India', 'Sector 62'),
+('IDBI0012345', 'IDBI Bank', 'Gachibowli');
+
+INSERT INTO CUSTOMER_PERSONAL_INFO (
+    CUSTOMER_ID, CUSTOMER_NAME, DATE_OF_BIRTH, GUARDIAN_NAME, ADDRESS, CONTACT_NO, MAIL_ID, GENDER, MARITAL_STATUS, IDENTIFICATION_DOC_TYPE, ID_DOC_NO, CITIZENSHIP
+) VALUES
+('C001', 'John Doe', '1985-04-12', 'Jane Doe', '123 Elm Street', 9876543210, 'john.doe@example.com', 'M', 'Single', 'Passport', 'A1234567', 'Indian'),
+('C002', 'Emily Davis', '1990-08-25', 'Michael Davis', '456 Oak Avenue', 8765432109, 'emily.davis@example.com', 'F', 'Married', 'Aadhaar', '1234-5678-9012', 'Indian'),
+('C003', 'Robert Brown', '1975-01-30', 'Sarah Brown', '789 Pine Road', 7654321098, 'robert.brown@example.com', 'M', 'Married', 'Driver License', 'DL-1234567890', 'Indian'),
+('C004', 'Alice Johnson', '1988-11-15', 'David Johnson', '321 Maple Lane', 6543210987, 'alice.johnson@example.com', 'F', 'Single', 'Voter ID', 'V123456789', 'Indian'),
+('C005', 'Michael Wilson', '1995-03-22', 'Laura Wilson', '654 Cedar Street', 5432109876, 'michael.wilson@example.com', 'M', 'Single', 'Passport', 'B9876543', 'Indian');
+
+INSERT INTO CUSTOMER_REFERENCE_INFO (
+    CUSTOMER_ID, REFERENCE_ACC_NAME, REFERENCE_ACC_NO, REFERENCE_ACC_ADDRESS, RELATION
+) VALUES
+('C001', 'James Doe', 1234567890123456, '987 Elm Street', 'Brother'),
+('C002', 'Anna Davis', 2345678901234567, '876 Oak Avenue', 'Sister'),
+('C003', 'Charles Brown', 3456789012345678, '765 Pine Road', 'Father'),
+('C004', 'Elizabeth Johnson', 4567890123456789, '654 Maple Lane', 'Mother'),
+('C005', 'William Wilson', 5678901234567890, '543 Cedar Street', 'Uncle');
